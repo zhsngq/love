@@ -93,26 +93,45 @@ function startHeartAnimation() {
 })(jQuery);
 
 function timeElapse(date){
-	var current = Date();
-	var seconds = (Date.parse(current) - Date.parse(date)) / 1000;
-	var days = Math.floor(seconds / (3600 * 24));
-	seconds = seconds % (3600 * 24);
-	var hours = Math.floor(seconds / 3600);
-	if (hours < 10) {
-		hours = "0" + hours;
-	}
-	seconds = seconds % 3600;
-	var minutes = Math.floor(seconds / 60);
-	if (minutes < 10) {
-		minutes = "0" + minutes;
-	}
-	seconds = seconds % 60;
-	if (seconds < 10) {
-		seconds = "0" + seconds;
-	}
+	var current = getTime();
+	var days = dateComp(current.split(' ')[0],date.split(' ')[0]);
+
+	var hours = current.split(' ')[1].split(':')[0]-date.split(' ')[1].split(':')[0];
+	hours = hours<0 ? hours+24 : hours;
+	var minutes = current.split(' ')[1].split(':')[1]-date.split(' ')[1].split(':')[1];
+	minutes = minutes<0 ? minutes+60 : minutes;
+	var seconds = current.split(' ')[1].split(':')[2]-date.split(' ')[1].split(':')[2];
+	seconds = seconds<0 ? seconds+60 : seconds;
 	var result = "<span class=\"digit\">" + days + "</span> days <span class=\"digit\">" + hours + "</span> hours <span class=\"digit\">" + minutes + "</span> minutes <span class=\"digit\">" + seconds + "</span> seconds";
 	$("#elapseClock").html(result);
 }
+
+function dateComp(d1,d2)
+{
+	var date1= new Date(Date.parse(d1.replace("-","/")));
+	var date2= new Date(Date.parse(d2.replace("-","/")));
+	var r = (date1-date2)/(24*60*60*1000);
+	return r;
+}
+
+function getTime(){
+	var d = new Date();
+	var years = d.getFullYear();
+	var month = add_zero(d.getMonth()+1);
+	var days = add_zero(d.getDate());
+	var hours = add_zero(d.getHours());
+	var minutes = add_zero(d.getMinutes());
+	var seconds=add_zero(d.getSeconds());
+	var ndate = years+"-"+month+"-"+days+" "+hours+":"+minutes+":"+seconds;
+	return ndate+"";
+}
+
+function add_zero(temp)
+{
+ if(temp<10) return "0"+temp;
+ else return temp;
+}
+
 
 function showMessages() {
 	adjustWordsPosition();
