@@ -94,14 +94,14 @@ function startHeartAnimation() {
 
 function timeElapse(date){
 	var current = getTime();
-	var days = dateComp(current.split(' ')[0],date.split(' ')[0]);
-
-	var hours = current.split(' ')[1].split(':')[0]-date.split(' ')[1].split(':')[0];
-	hours = hours<0 ? hours+24 : hours;
-	var minutes = current.split(' ')[1].split(':')[1]-date.split(' ')[1].split(':')[1];
-	minutes = minutes<0 ? minutes+60 : minutes;
-	var seconds = current.split(' ')[1].split(':')[2]-date.split(' ')[1].split(':')[2];
-	seconds = seconds<0 ? seconds+60 : seconds;
+	var dataTime = dateComp(current,date);
+	var days = (dataTime+"").split('.')[0];
+	dataTime = 24*(dataTime-days);
+	var hours = (dataTime+"").split('.')[0];
+	dataTime = 60*(dataTime-hours);
+	var minutes = (dataTime+"").split('.')[0];
+	dataTime = 60*(dataTime-minutes);
+	var seconds = (dataTime+"").split('.')[0];
 	var result = "<span class=\"digit\">" + days + "</span> days <span class=\"digit\">" + hours + "</span> hours <span class=\"digit\">" + minutes + "</span> minutes <span class=\"digit\">" + seconds + "</span> seconds";
 	$("#elapseClock").html(result);
 }
